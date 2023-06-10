@@ -15,7 +15,12 @@ return [
     |
     */
 
+    'developer' => [
+        'name' => 'Wentoxxx',
+        'website' => 'https://owenwattimena.github.io'
+    ],
     'name' => env('APP_NAME', 'Laravel'),
+    'name_mini' => env('APP_NAME_MINI', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +181,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        App\Providers\RepositoryProvider::class
 
     ],
 
