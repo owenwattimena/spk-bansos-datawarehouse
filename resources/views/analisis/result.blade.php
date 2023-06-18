@@ -167,7 +167,8 @@
                     display: true
                     , text: 'Penerima VS Bukan Penerima'
                 }
-            }
+            },
+            tooltipTemplate: "<%= value %>"
         , }
     });
 

@@ -7,7 +7,7 @@
                 <!-- Sidenav Accordion (Dashboard)-->
                 <a class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                     <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                    Dashboards
+                    Dashboard
                 </a>
                 <a class="nav-link {{ request()->is('import') ? 'active' : '' }}" href="{{ route('import') }}">
                     <div class="nav-link-icon"><i data-feather="download"></i></div>
