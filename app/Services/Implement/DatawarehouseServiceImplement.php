@@ -1,9 +1,11 @@
 <?php
 namespace App\Services\Implement;
+
 use App\Repositories\DatawarehouseRepository;
 use App\Repositories\PopulationRepository;
 use App\Services\DatawarehouseService;
 use Illuminate\Support\Collection;
+
 // use Illuminate\Database\Eloquent\Collection;
 
 class DatawarehouseServiceImplement implements DatawarehouseService
@@ -15,10 +17,10 @@ class DatawarehouseServiceImplement implements DatawarehouseService
         $this->datawarehouseRepo = $datawarehouseRepo;
         $this->populationRepo = $populationRepo;
     }
-    public function get():Collection
+    public function get(): Collection
     {
         $result = $this->datawarehouseRepo->get();
-        $result->each(function($data){
+        $result->each(function ($data) {
             $kepala_keluarga = $this->populationRepo->getHouseholdHeads($data->nomor_kk);
             $data->kepala_keluarga = $kepala_keluarga ? $kepala_keluarga->nama_lengkap : null;
             $data->nik = $kepala_keluarga ? $kepala_keluarga->nik : null;
@@ -31,16 +33,84 @@ class DatawarehouseServiceImplement implements DatawarehouseService
         });
         return $result;
     }
-    public function pieChartData():array
+    public function pieChartData(): array
     {
         return $this->datawarehouseRepo->pieChartData();
     }
-    public function getTotalPopulation():int
+    public function getTotalPopulation(): int
     {
         return $this->datawarehouseRepo->getTotalPopulation();
     }
-    public function getTotalHouseholdHeads():int
+    public function getTotalHouseholdHeads(): int
     {
         return $this->datawarehouseRepo->getTotalHouseholdHeads();
+    }
+
+    public function getTanggunganGrafik(Collection $data): array
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            $total = $value->jumlah_anggota_keluarga;
+            if (isset($result[$total])) {
+                $result[$total]++;
+            } else {
+                $result[$total] = 1;
+            }
+        }
+
+        krsort($result);
+        $dataLabel = [];
+
+        foreach ($result as $key => $value) {
+            $dataLabel['label'][] = $key;
+            $dataLabel['data'][] = $value;
+        }
+
+        return $dataLabel;
+    }
+
+    public function getPendapatanGrafik(Collection $data): array
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            $total = $value->total_penghasilan;
+            if (isset($result[$total])) {
+                $result[$total]++;
+            } else {
+                $result[$total] = 1;
+            }
+        }
+
+        krsort($result);
+        $dataLabel = [];
+
+        foreach ($result as $key => $value) {
+            $dataLabel['label'][] = $key;
+            $dataLabel['data'][] = $value;
+        }
+
+        return $dataLabel;
+    }
+    public function getPekerjaanGrafik(Collection $data): array
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            $total = $value->pekerjaan;
+            if (isset($result[$total])) {
+                $result[$total]++;
+            } else {
+                $result[$total] = 1;
+            }
+        }
+
+        krsort($result);
+        $dataLabel = [];
+
+        foreach ($result as $key => $value) {
+            $dataLabel['label'][] = $key;
+            $dataLabel['data'][] = $value;
+        }
+
+        return $dataLabel;
     }
 }

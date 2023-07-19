@@ -90,7 +90,7 @@
                                 </tr>
                                 @empty
                                     <tr>
-                                        <td>Belum ada data.</td>
+                                        <td colspan="14">Belum ada data.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

@@ -16,14 +16,35 @@
     <div class="alert alert-info" role="alert">
         Daftar penerima bantuan berdasarkan analisis datawarehouse dengan kriteria<br>
         <strong>Jumlah Anggota Keluarga ≤ 3 Orang dan Penghasilan ≤ 1jt<br>
-        Jumlah Anggota Keluarga ≥4 Orang dan Penghasilan ≤ 2jt<br></strong>
+            Jumlah Anggota Keluarga ≥4 Orang dan Penghasilan ≤ 2jt<br></strong>
         Adalah sebagai berikut:
     </div>
     <div class="row">
-        <div class="col-md-4">
+        {{-- <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="chart-pie"><canvas id="myPieChart" width="100%"></canvas></div>
+                </div>
+            </div>
+        </div> --}}
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="chart-pie"><canvas id="tanggunganChart" width="100%"></canvas></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="chart-pie"><canvas id="pendapatanChart" width="100%"></canvas></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body" >
+                    <div class="chart-pie" style="height: auto"><canvas id="pekerjaanChart" width="100%"></canvas></div>
                 </div>
             </div>
         </div>
@@ -109,7 +130,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td>Belum ada data.</td>
+                                    <td colspan="12">Belum ada data.</td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -127,6 +148,70 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 {{-- <script src="{{ asset('assets') }}/demo/chart-pie-demo.js"></script> --}}
 <script>
+    let dataGrafikTanggungan = JSON.parse(`{{ $grafikTanggungan }}`.replace(/&quot;/g, '"'));
+    let dataGrafikPendapatan = JSON.parse(`{{ $grafikPendapatan }}`.replace(/&quot;/g, '"'));
+    let dataGrafikPekerjaan = JSON.parse(`{{ $grafikPekerjaan }}`.replace(/&quot;/g, '"'));
+    // var ict_unit = [];
+    // var efficiency = [];
+
+    function generateColor(data)
+    {
+        var coloR = [];
+
+        var dynamicColors = function() {
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        };
+
+        for (var i in data) {
+            coloR.push(dynamicColors());
+        }
+
+        return coloR;
+    }
+
+    const ctxTanggungan = document.getElementById('tanggunganChart');
+    new Chart(ctxTanggungan, {
+        type: 'bar'
+        , data: {
+            labels: dataGrafikTanggungan.label
+            , datasets: [{
+                label: 'Jumlah Tanggungan/Keluarga'
+                , data: dataGrafikTanggungan.data
+                , backgroundColor: generateColor(dataGrafikTanggungan.label)
+                // , hoverBorderColor: "rgba(234, 236, 244, 1)"
+            }]
+        }
+    });
+    const ctxPendapatan = document.getElementById('pendapatanChart');
+    new Chart(ctxPendapatan, {
+        type: 'bar'
+        , data: {
+            labels: dataGrafikPendapatan.label
+            , datasets: [{
+                label: 'Jumlah Pendapatan/Keluarga'
+                , data: dataGrafikPendapatan.data
+                , backgroundColor: generateColor(dataGrafikPendapatan.label)
+                // , hoverBorderColor: "rgba(234, 236, 244, 1)"
+            }]
+        }
+    });
+    const ctxPekerjaan = document.getElementById('pekerjaanChart');
+    new Chart(ctxPekerjaan, {
+        type: 'bar'
+        , data: {
+            labels: dataGrafikPekerjaan.label
+            , datasets: [{
+                label: 'Pekerjaan/Keluarga'
+                , data: dataGrafikPekerjaan.data
+                , backgroundColor: generateColor(dataGrafikPekerjaan.label)
+                // , hoverBorderColor: "rgba(234, 236, 244, 1)"
+            }]
+        }
+    });
+
     const ctx = document.getElementById('myPieChart');
     new Chart(ctx, {
         type: 'pie'
@@ -167,8 +252,8 @@
                     display: true
                     , text: 'Penerima VS Bukan Penerima'
                 }
-            },
-            tooltipTemplate: "<%= value %>"
+            }
+            , tooltipTemplate: "<%= value %>"
         , }
     });
 

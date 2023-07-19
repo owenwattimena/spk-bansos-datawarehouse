@@ -9,4 +9,7 @@ interface DatawarehouseService
     public function pieChartData():array;
     public function getTotalPopulation():int;
     public function getTotalHouseholdHeads():int;
+    public function getTanggunganGrafik(Collection $data):array;
+    public function getPendapatanGrafik(Collection $data):array;
+    public function getPekerjaanGrafik(Collection $data):array;
 }

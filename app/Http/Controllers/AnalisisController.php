@@ -28,7 +28,9 @@ class AnalisisController extends Controller
     {
         $data['totalHouseholdHeads'] = $this->populationService->getTotalHouseholdHeads();
         $data['result'] = $this->datawarehouseService->get()->sortBy(['total_penghasilan', 'jumlah_anggota_keluarga' => 'desc']);
-
+        $data['grafikTanggungan'] = json_encode($this->datawarehouseService->getTanggunganGrafik($data['result']));
+        $data['grafikPendapatan'] = json_encode($this->datawarehouseService->getPendapatanGrafik($data['result']));
+        $data['grafikPekerjaan'] = json_encode($this->datawarehouseService->getPekerjaanGrafik($data['result']));
         return view('analisis.result', $data);
     }
 
